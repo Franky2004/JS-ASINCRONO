@@ -61,10 +61,16 @@ miPromesa
 // jQuery
 $("#btnJQuery").click(function () {
     $.ajax({
-        url: "https://jsonplaceholder.typicode.com/posts/2",
+        url: "https://jsonplaceholder.typicode.com/posts",
         method: "GET",
         success: function (data) {
-            $("#resultJQuery").text(data.title);
+            console.log(data);
+            
+            data.forEach(function(item){
+            $("#resultJQuery").append('<li>' + item.title + '</li>');
+
+            });
+            // $("#resultJQuery").text(data.title);
         },
         error: function (error) {
             console.error("Error jQuery:", error);
@@ -75,11 +81,34 @@ $("#btnJQuery").click(function () {
 // Axios
 document.getElementById("btnAxios").addEventListener("click", function () {
     axios
-        .get("https://jsonplaceholder.typicode.com/posts/3")
+        .get("https://jsonplaceholder.typicode.com/albums")
         .then(function (response) {
-            document.getElementById("resultAxios").textContent = response.data.title;
+            console.log(response.data);
+            response.data.forEach(function(elem){
+                $("#resultAxios").append('<li>' + elem.title + '</li>');
+            });
+            // document.getElementById("resultAxios").textContent = response.data.title;
         })
         .catch(function (error) {
             console.error("Error Axios:", error);
+        });
+});
+
+// Funcion fetch() para obtener info de una API
+$("#btnImg").on("click", function(){
+    fetch('https://dummyjson.com/recipes/1')
+        .then(function(response){
+            if (!response.ok) {
+                throw new Error("Network response was not ok");
+            }
+            return response.json();
+        })
+        .then(function(response){
+            console.log(response);
+
+            $('#imgCont').append('<img src="' + response.image+ '" alt="imagen de API">')
+        })
+        .catch(function (error) {
+            console.error("Error Fetch Images:", error);
         });
 });
